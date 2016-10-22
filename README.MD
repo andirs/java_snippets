@@ -7,4 +7,5 @@ This is a loose collection of Java programs and source codes.
 	- BubbleSort
 - Parallel Computing
 	- Consumer 
+	- Philosophs
 	- Running
