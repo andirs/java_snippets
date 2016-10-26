@@ -7,23 +7,27 @@ public class Semaphore
     private int count;
     public Semaphore(int count)
     {
+        if (count < 0)
+        {
+            this.count = count;
+        }
         this.count = count;
     }
     
     public synchronized void p()
     {
-        try
+        while(count == 0)
         {
-            while(count == 0)
+            try
             {
                 wait();
             }
-            count--;
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
         }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
+        count--;
     }
     
     public synchronized void v()
