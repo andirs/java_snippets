@@ -1,5 +1,6 @@
 /**
 * Quick Semaphore Implementation for synchronization jobs
+* Offers additive and simple semaphore use.
 */
 
 public class Semaphore 
@@ -14,9 +15,9 @@ public class Semaphore
         this.count = count;
     }
     
-    public synchronized void p()
+    public synchronized void p(int value)
     {
-        while(count == 0)
+        while(count - value <= 0)
         {
             try
             {
@@ -27,13 +28,22 @@ public class Semaphore
                 e.printStackTrace();
             }
         }
-        count--;
+        count -= value;
     }
     
-    public synchronized void v()
+    public synchronized void v(int value)
     {
-        count++;
-        notify();
+        count += value;
+        notifyAll();
     }
 
+    public void p()
+    {
+        p(1);
+    }
+
+    public void v()
+    {
+        v(1);
+    }
 }
