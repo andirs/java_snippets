@@ -8,9 +8,12 @@ public class Semaphore
     private int count;
     public Semaphore(int count)
     {
+        // Semaphore count can't get smaller than 0
+        // if so, set it to 0 - which indicates an exclusive 
+        // semaphore
         if (count < 0)
         {
-            this.count = count;
+            this.count = 0;
         }
         this.count = count;
     }
