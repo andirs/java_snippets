@@ -20,6 +20,7 @@ public class Semaphore
     
     public synchronized void p(int value)
     {
+        // If the value is too big, wait.
         while(count - value <= 0)
         {
             try
@@ -31,11 +32,14 @@ public class Semaphore
                 e.printStackTrace();
             }
         }
+        // Subtract value from internal semaphore count
         count -= value;
     }
     
     public synchronized void v(int value)
     {
+        // Increase semaphore count by value and 
+        // notify all waiting threads.
         count += value;
         notifyAll();
     }
