@@ -1,5 +1,3 @@
-package Philosophs;
-
 public class EveryNight 
 {
 
@@ -12,7 +10,7 @@ public class EveryNight
             forks[i] = true;
         }
         
-        // Initialize the renown banquet of Socrates
+        // Initialize the infamous banquet of Socrates
         Table socratesTable = new Table(forks, 5);
         
         Philosoph hegel = new Philosoph("Hegel", 0, socratesTable, 5);

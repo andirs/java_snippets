@@ -1,5 +1,3 @@
-package Philosophs;
-
 public class Table 
 {
     private boolean[] forks;
@@ -11,15 +9,15 @@ public class Table
         this.philosophs = philosophs;
     }
     
-    private boolean[] getForks()
+    public boolean[] getForks()
     {
         return forks;
     }
     
-    public synchronized void eat(int plate)
+    public synchronized void takeFork(int plate)
     {
         int forkNumberLeft = (((plate-1 % philosophs) + philosophs) % philosophs);
-        int forkNumberRight = ((plate) % philosophs);
+        int forkNumberRight = plate;
         while(!forks[forkNumberLeft] || !forks[forkNumberRight])
         {
             try
@@ -32,36 +30,39 @@ public class Table
                 e.printStackTrace();
             }
         }
-        System.out.println("Eating at plate: " + plate 
-                               + " with Fork " + forkNumberLeft 
-                               + " and " + forkNumberRight);
         forks[forkNumberLeft] = false;
         forks[forkNumberRight] = false;
+    }
+    
+    public synchronized void putFork(int plate)
+    {
+        int forkNumberLeft =  (((plate-1 % philosophs) + philosophs) % philosophs);
+        int forkNumberRight = plate;
+        
+        forks[forkNumberLeft] = true;
+        forks[forkNumberRight] = true;
+        notifyAll();
+    }
+    
+    public synchronized void eat(int plate)
+    {
+        
+        System.out.println("Eating at plate: " + plate 
+                               + " with Fork " + (((plate-1 % philosophs) + philosophs) % philosophs) 
+                               + " and " + plate);
         
         try {
             // Eat some
-            Thread.sleep((int) (Math.random() * 2000));
+            Thread.sleep((int) (Math.random() * 3000));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
-        think(plate);
         
     }
     
     public synchronized void think(int plate)
     {
-        int forkNumberLeft =  (((plate-1 % philosophs) + philosophs) % philosophs);
-        int forkNumberRight = ((plate) % philosophs);
-        
-        System.out.println(plate + " has to wait to think.");
-        
-        forks[forkNumberLeft] = true;
-        forks[forkNumberRight] = true;
-        System.out.println("Fork: " + forkNumberLeft
-                           + " & Fork: " + forkNumberRight 
-                           + " are free again.");
-        notifyAll();
+        System.out.println(plate + " thinks.");
     }
 
 }

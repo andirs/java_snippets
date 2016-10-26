@@ -1,5 +1,3 @@
-package Philosophs;
-
 public class Philosoph extends Thread 
 {
     private int plate;
@@ -19,15 +17,17 @@ public class Philosoph extends Thread
     {
         while(bellyIsFull > 0)
         {
-            table.eat(plate);
+            table.takeFork(plate);
             try
             {
                 sleep((int) (Math.random() * 2000));
+                table.eat(plate);
             }
             catch (InterruptedException e)
             {
                 e.printStackTrace();
             }
+            table.putFork(plate);
             table.think(plate);
             bellyIsFull--;
         }
