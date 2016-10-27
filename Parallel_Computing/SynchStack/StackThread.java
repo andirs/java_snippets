@@ -1,5 +1,3 @@
-package SynchStack;
-
 public class StackThread extends Thread
 {
     private SynchStack stack;
@@ -21,8 +19,8 @@ public class StackThread extends Thread
             if (upper)
             {
                 i++;
-                System.out.println(getName() + " pushed package " + i);
                 stack.push(getName() + " " + i + " (Size: "+ stack.getSize() + ")");
+                System.out.println(getName() + " pushed package " + i);
                 try
                 {
                     sleep((int) (Math.random() * 1000));

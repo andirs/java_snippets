@@ -1,5 +1,3 @@
-package SynchStack;
-
 public class Semaphore 
 {
     private int count;
