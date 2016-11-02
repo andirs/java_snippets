@@ -21,7 +21,7 @@ public class SynchStack
     // Methods of SynchStack
     /**
      * Adds element to the start of the SynchStack.
-     * Uses Semaphore class to implement synchronizing.
+     * Uses additive and mutex Semaphore to implement synchronizing.
      */
     public void push(Object o)
     {
@@ -40,7 +40,6 @@ public class SynchStack
     
     /**
      * Returns first Object of list and removes it from list.
-     * If list is empty this function throws an IllegalStateException
      * @return Object
      */
     public Object pop()
