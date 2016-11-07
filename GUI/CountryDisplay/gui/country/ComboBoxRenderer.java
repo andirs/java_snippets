@@ -8,20 +8,13 @@
  * For more information about ComboBoxRenderer refer to
  * the Oracle Java Documentation.
  */
-package gui.land;
+package gui.country;
 
 import java.awt.*;
 import javax.swing.*;
 
 public class ComboBoxRenderer extends JLabel implements ListCellRenderer 
-{
-    public ComboBoxRenderer()
-    {
-        //setOpaque(true);
-        //setHorizontalAlignment(LEFT);
-        //setVerticalAlignment(CENTER);
-    }
-    
+{   
     /**
      * Checks if given value is of class Land and extracts the
      * name of the country based on land.getName() and
@@ -35,10 +28,10 @@ public class ComboBoxRenderer extends JLabel implements ListCellRenderer
                                         boolean isSelected,
                                         boolean cellHasFocus)
     {
-        if (value instanceof Land)
+        if (value instanceof Country)
         {
-            Land land = (Land) value;
-            setText(land.getName());
+            Country selectedCountry = (Country) value;
+            setText(selectedCountry.getName());
         }
         
         return this;

@@ -1,6 +1,8 @@
-package gui.land;
+package gui.country;
 
-public class Land 
+import java.text.NumberFormat;
+
+public class Country 
 {
     private String name;
     private long einwohner;
@@ -8,7 +10,7 @@ public class Land
     private String hauptstadt;
     private long bevDichte;
     
-    public Land(String name, long einwohner, long flaeche, String hauptstadt)
+    public Country(String name, long einwohner, long flaeche, String hauptstadt)
     {
         this.name = name;
         this.einwohner = einwohner;
@@ -62,37 +64,32 @@ public class Land
      * @param  num  long value
      * @return      String for print-out with possible additions.
      */
-    public String runden(long num)
+    public String format(long zahl)
     {
         double number;
         
-        if (num > 999999)
+        if (zahl > 999999)
         {
-            number = Math.round( (double) num/1000000);
+            number = Math.round( (double) zahl/1000000);
             return String.format("%.0f", number) + " Mill.";
         }
-        else if (num > 1000)
+        else if (zahl > 1000)
         {
-            number = Math.round( (double) num / 1000);
-            return String.format("%.3f", number);
+            number = Math.round( (double) zahl / 1000) * 1000;
+            return NumberFormat.getIntegerInstance().format(number);
         }
         else
         {
-            return Long.toString(num);
+            return Long.toString(zahl);
         }
-    }
-    
-    public String toString()
-    {
-        return getName();
     }
     
     public String getNonStatString()
     {
         return "Name: " + getName() + "\n"
                 + "Hauptstadt: " + getHauptstadt() + "\n"
-                + "Einwohner: " + runden(getEinwohner()) + "\n"
-                + "Fläche (in qkm): " + runden(getFlaeche()) + "\n"
+                + "Einwohner: " + format(getEinwohner()) + "\n"
+                + "Fläche (in qkm): " + format(getFlaeche()) + "\n"
                 + "Bevölkerungsdichte (in Personen pro qkm): " + getBevDichte() + "\n";
     }
 }
