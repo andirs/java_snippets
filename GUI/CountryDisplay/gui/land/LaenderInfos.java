@@ -1,13 +1,15 @@
 package gui.land;
 import javax.swing.*;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
 public class LaenderInfos extends JFrame 
                           implements ActionListener 
 {
-    private JComboBox cb;
+    public JComboBox countrySelector;
+    public JCheckBox exactValues;
     
     // Create JLabel Array with 5 values
     // 0 = land; 1 = hauptstadt; 2 = einwohner; 3 = flaeche; 4 = density
@@ -24,20 +26,23 @@ public class LaenderInfos extends JFrame
     {
         super("LänderInfos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        // JComboBox erzeugen
-        JComboBox cb = new JComboBox(laender);
+        // JComboBox initiieren
+        countrySelector = new JComboBox(laender);
         
         // ActionListener an JComboBox anmelden
-        cb.addActionListener(this);
+        countrySelector.addActionListener(this);
         
         // Use custom ComboBoxRenderer to show country names 
         // and avoid overriding toString()
         ComboBoxRenderer renderer = new ComboBoxRenderer();
-        cb.setRenderer(renderer);
+        countrySelector.setRenderer(renderer);
         
         // Create JCheckBox
-        JCheckBox detailedView = new JCheckBox("genaue Angaben");
-        detailedView.setSelected(true);
+        exactValues = new JCheckBox("genaue Angaben");
+        exactValues.setSelected(true);
+        
+        // ActionListener an JCheckBox anmelden
+        exactValues.addActionListener(this);
         
         // Create JLabels labels
         labels[0] = new JLabel("Land:");
@@ -47,26 +52,107 @@ public class LaenderInfos extends JFrame
         labels[4] = new JLabel("Bevölkerungsdichte (in Personen pro qkm):");
         
         // Create JLabels values for GUI references
+        // Get values from first entry of laender[] to match selection
+        values[0] = new JLabel(laender[0].getName());
+        values[1] = new JLabel(laender[0].getHauptstadt());
+        values[2] = new JLabel(Long.toString(laender[0].getEinwohner()));
+        values[3] = new JLabel(Long.toString(laender[0].getFlaeche()));
+        values[4] = new JLabel(Long.toString(laender[0].getBevDichte()));
         
+        // Set Main Container Layout
+        setLayout(new BorderLayout());
         
-        //JPanel mainJPanel = new JPanel();
-        setLayout(new GridLayout(0, 1));
-        add(cb);
-        add(detailedView);
+        // Create two JPanel for Selection Controller and View
+        JPanel headJPanel = new JPanel();
+        JPanel mainJPanel = new JPanel();
+        
+        // Add Combo- and Checkbox to headJPanel
+        headJPanel.setLayout(new GridLayout(0, 1));
+        headJPanel.add(countrySelector);
+        headJPanel.add(exactValues);
+        
+        // Add Labels and Values to mainJPanel
+        mainJPanel.setLayout(new GridLayout(0,2));
         for (int i = 0; i < labels.length; i++)
         {
-            add(labels[i]);
+            mainJPanel.add(labels[i]);
+            mainJPanel.add(values[i]);
         }
+        
+        add(headJPanel, BorderLayout.NORTH);
+        add(mainJPanel, BorderLayout.CENTER);
         
         setLocation(200, 200);
         setSize(600, 200);
         setVisible(true);
     }
     
+    public JComboBox getComboBox()
+    {
+        return countrySelector;
+    }
+    
+    public String formatieren(long zahl)
+    {
+        double number;
+        
+        if (zahl > 999999)
+        {
+            number = Math.round( (double) zahl/1000000);
+            return String.format("%.0f", number) + " Mill.";
+        }
+        else if (zahl > 1000)
+        {
+            number = Math.round( (double) zahl / 1000);
+            return String.format("%.3f", number);
+        }
+        else
+        {
+           return Long.toString(zahl);
+        }
+    }
+    
     public void actionPerformed(ActionEvent e)
     {
+        // Create temporary storage for output Strings
+        boolean exactFlag = this.exactValues.isSelected();
+        Land selectedLand = (Land) this.countrySelector.getSelectedItem();
+        //System.out.println(e.getSource() == countrySelector);
         
+        // Never changing values
+        values[0].setText(selectedLand.getName());
+        values[1].setText(selectedLand.getHauptstadt());
+        values[4].setText(Long.toString(selectedLand.getBevDichte()));
+        
+        if (e.getSource() == exactValues)
+        {
+            if (exactFlag)
+            {
+                values[2].setText(Long.toString(selectedLand.getEinwohner()));
+                values[3].setText(Long.toString(selectedLand.getFlaeche()));
+            }
+            else
+            {         
+                values[2].setText(formatieren(selectedLand.getEinwohner()));
+                values[3].setText(formatieren(selectedLand.getFlaeche()));
+            }
+        }
+        
+        else if (e.getSource() == countrySelector)
+        {
+            if (exactFlag)
+            {
+                values[2].setText(Long.toString(selectedLand.getEinwohner()));
+                values[3].setText(Long.toString(selectedLand.getFlaeche()));
+            }
+            else
+            {         
+                values[2].setText(formatieren(selectedLand.getEinwohner()));
+                values[3].setText(formatieren(selectedLand.getFlaeche()));
+            }
+        }
     }
+
     
     public static void main(String[] args)
     {
@@ -79,8 +165,6 @@ public class LaenderInfos extends JFrame
         laender[2] = new Land("TinyLand", 855, 900, "Tiny Capital");
         //System.out.println(TinyLand.getNonStatString());
         
-        new LaenderInfos(laender);
-        
+        LaenderInfos test = new LaenderInfos(laender);
     }
-
 }
