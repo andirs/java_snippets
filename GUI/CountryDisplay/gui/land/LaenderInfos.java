@@ -4,13 +4,21 @@ import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
-public class LaenderInfos extends JFrame implements ActionListener 
+public class LaenderInfos extends JFrame 
+                          implements ActionListener 
 {
     private JComboBox cb;
+    
+    // Create JLabel Array with 5 values
+    // 0 = land; 1 = hauptstadt; 2 = einwohner; 3 = flaeche; 4 = density
+    private JLabel[] labels = new JLabel[5];
+    private JLabel[] values = new JLabel[5];
+    /*
     private JLabel land;
     private JLabel einwohner;
     private JLabel flaeche;
     private JLabel haupstadt;
+    */
     
     public LaenderInfos(Land[] laender)
     {
@@ -19,17 +27,39 @@ public class LaenderInfos extends JFrame implements ActionListener
         // JComboBox erzeugen
         JComboBox cb = new JComboBox(laender);
         
+        // ActionListener an JComboBox anmelden
+        cb.addActionListener(this);
+        
         // Use custom ComboBoxRenderer to show country names 
         // and avoid overriding toString()
         ComboBoxRenderer renderer = new ComboBoxRenderer();
         cb.setRenderer(renderer);
         
+        // Create JCheckBox
+        JCheckBox detailedView = new JCheckBox("genaue Angaben");
+        detailedView.setSelected(true);
+        
+        // Create JLabels labels
+        labels[0] = new JLabel("Land:");
+        labels[1] = new JLabel("Hauptstadt:");
+        labels[2] = new JLabel("Einwohner:");
+        labels[3] = new JLabel("Fläche (in qkm):");
+        labels[4] = new JLabel("Bevölkerungsdichte (in Personen pro qkm):");
+        
+        // Create JLabels values for GUI references
+        
+        
         //JPanel mainJPanel = new JPanel();
-        //mainJPanel.setLayout(new GridLayout(1,0));
+        setLayout(new GridLayout(0, 1));
         add(cb);
+        add(detailedView);
+        for (int i = 0; i < labels.length; i++)
+        {
+            add(labels[i]);
+        }
         
         setLocation(200, 200);
-        setSize(300, 200);
+        setSize(600, 200);
         setVisible(true);
     }
     
