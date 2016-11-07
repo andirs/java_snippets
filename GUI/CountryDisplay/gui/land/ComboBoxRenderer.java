@@ -11,7 +11,6 @@
 package gui.land;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 public class ComboBoxRenderer extends JLabel implements ListCellRenderer 

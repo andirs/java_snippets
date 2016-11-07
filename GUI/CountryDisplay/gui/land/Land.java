@@ -14,7 +14,7 @@ public class Land
         this.einwohner = einwohner;
         this.flaeche = flaeche;
         this.hauptstadt = hauptstadt;
-        bevDichte = einwohner / flaeche;
+        bevDichte = Math.round(einwohner / (double) flaeche);
     }
     
     public String getName()
@@ -78,8 +78,13 @@ public class Land
         }
         else
         {
-           return Long.toString(num);
+            return Long.toString(num);
         }
+    }
+    
+    public String toString()
+    {
+        return getName();
     }
     
     public String getNonStatString()
