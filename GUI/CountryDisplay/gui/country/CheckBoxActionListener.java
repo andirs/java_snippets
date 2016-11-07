@@ -5,6 +5,11 @@ import javax.swing.*;
 
 public class CheckBoxActionListener extends JFrame implements ActionListener
 {
+    /**
+     * Action Listener for JCheckBox
+     * Acts as model between CountryInformation and Country
+     */
+    private static final long serialVersionUID = 1L;
     CountryInformation information;
     
     public CheckBoxActionListener(CountryInformation information)

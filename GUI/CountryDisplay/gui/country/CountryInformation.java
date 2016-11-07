@@ -3,7 +3,6 @@ package gui.country;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.text.NumberFormat;
 
 public class CountryInformation extends JFrame
 {
@@ -20,8 +19,8 @@ public class CountryInformation extends JFrame
     
     // Create JLabel Arrays with 5 labels and values
     // 0 = country; 1 = capital; 2 = population; 3 = area; 4 = density
-    private JLabel[] labels = new JLabel[5];
-    private JLabel[] values = new JLabel[5];
+    private JLabel[] displayLabels = new JLabel[5];
+    private JLabel[] displayValues = new JLabel[5];
     
     public CountryInformation(Country[] countries)
     {
@@ -48,18 +47,18 @@ public class CountryInformation extends JFrame
         exactValues.addActionListener(new CheckBoxActionListener(this));
         
         // Create JLabels labels
-        labels[0] = new JLabel("Land:");
-        labels[1] = new JLabel("Hauptstadt:");
-        labels[2] = new JLabel("Einwohner:");
-        labels[3] = new JLabel("Fläche (in qkm):");
-        labels[4] = new JLabel("Bevölkerungsdichte (in Personen pro qkm):");
+        displayLabels[0] = new JLabel("Land:");
+        displayLabels[1] = new JLabel("Hauptstadt:");
+        displayLabels[2] = new JLabel("Einwohner:");
+        displayLabels[3] = new JLabel("Fläche (in qkm):");
+        displayLabels[4] = new JLabel("Bevölkerungsdichte (in Personen pro qkm):");
         
         // Create JLabels values
-        values[0] = new JLabel(countries[0].getName());
-        values[1] = new JLabel(countries[0].getHauptstadt());
-        values[2] = new JLabel(Long.toString(countries[0].getEinwohner()));
-        values[3] = new JLabel(Long.toString(countries[0].getFlaeche()));
-        values[4] = new JLabel(Long.toString(countries[0].getBevDichte()));
+        displayValues[0] = new JLabel(countries[0].getName());
+        displayValues[1] = new JLabel(countries[0].getHauptstadt());
+        displayValues[2] = new JLabel(Long.toString(countries[0].getEinwohner()));
+        displayValues[3] = new JLabel(Long.toString(countries[0].getFlaeche()));
+        displayValues[4] = new JLabel(Long.toString(countries[0].getBevDichte()));
         
         // Set Main Container Layout
         setLayout(new BorderLayout());
@@ -75,10 +74,10 @@ public class CountryInformation extends JFrame
         
         // Add Labels and Values to mainJPanel
         mainJPanel.setLayout(new GridLayout(0,2));
-        for (int i = 0; i < labels.length; i++)
+        for (int i = 0; i < displayLabels.length; i++)
         {
-            mainJPanel.add(labels[i]);
-            mainJPanel.add(values[i]);
+            mainJPanel.add(displayLabels[i]);
+            mainJPanel.add(displayValues[i]);
         }
         
         add(headJPanel, BorderLayout.NORTH);
@@ -89,7 +88,11 @@ public class CountryInformation extends JFrame
         setVisible(true);
     }
     
-    public JComboBox getCountrySelector()
+    /**
+     * Getter Method for countrySelector
+     * @return  JComboBox<Country> this.countrySelector
+     */
+    public JComboBox<Country> getCountrySelector()
     {
         return countrySelector;
     }
@@ -101,7 +104,7 @@ public class CountryInformation extends JFrame
      */
     public void setValue(int idx, String changeValue)
     {
-        values[idx].setText(changeValue);
+        displayValues[idx].setText(changeValue);
     }
     
     /**

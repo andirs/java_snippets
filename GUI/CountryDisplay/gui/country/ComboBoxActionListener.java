@@ -5,6 +5,10 @@ import javax.swing.*;
 
 public class ComboBoxActionListener extends JFrame implements ActionListener 
 {
+    /**
+     * Action Listener for JComboBox
+     */
+    private static final long serialVersionUID = 1L;
     CountryInformation information;
     
     public ComboBoxActionListener(CountryInformation information)

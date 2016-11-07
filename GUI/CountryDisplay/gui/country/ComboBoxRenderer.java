@@ -13,7 +13,7 @@ package gui.country;
 import java.awt.*;
 import javax.swing.*;
 
-public class ComboBoxRenderer extends JLabel implements ListCellRenderer 
+public class ComboBoxRenderer extends JLabel implements ListCellRenderer<Object>
 {   
     /**
      * Checks if given value is of class Land and extracts the
