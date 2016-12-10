@@ -1,7 +1,13 @@
+/*
+ * Implementation of simple file locker;
+ * Simulates synchronized file locking method 
+ * that's restricted to only one thread for any given interval.
+ */      
+
 package pp.filelocking;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Iterator;
 
 public class File 
@@ -20,6 +26,12 @@ public class File
         lockMap = new ArrayList<Integer>();
     }
     
+    /**
+     * Locks interval if not locked yet.
+     * If locked, the thread waits.
+     * @param start     - start of interval
+     * @param end       - end of interval
+     */
     public synchronized void lock(int start, int end)
     {
         checkBorders(start, end);
@@ -36,19 +48,72 @@ public class File
             {
                 lockIsPossible = false;
             }
-            if (lockIsPossible)
-                System.out.println("Lock is possible");
-            else
-                System.out.println("Lock is impossible");
         }
+        if (lockIsPossible)
+        {
+            System.out.println("Lock (" + start + " | " + end + ") added.");
+            lockMap.add(start);
+            lockMap.add(end);
+        }
+        else
+        {
+            System.out.println("Lock (" + start + " | " + end + ") is impossible");
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+            
+            
     }
     
-    public void unlock(int start, int end)
+    /**
+     * Unlocks interval if locked.
+     * If unlocked, the method notifies all waiting threads.
+     * @param start     - start of interval
+     * @param end       - end of interval
+     */
+    public synchronized void unlock(int start, int end)
     {
         checkBorders(start, end);
+        int startCheck = 0, endCheck = 0;
+        boolean unlockIsPossible = false;
+        
+        // check if interval is locked already
+        Iterator<Integer> iterator = lockMap.iterator();
+        while (iterator.hasNext() && !(lockMap.isEmpty()))
+        {
+            startCheck = iterator.next();
+            endCheck = iterator.next();
+            if(start == startCheck && end == endCheck)
+            {
+                unlockIsPossible = true;
+            }
+            
+        }
+        if (unlockIsPossible)
+        {
+            System.out.println("Lock (" + start + " | " + end + ") removed.");
+            lockMap.remove(Integer.valueOf(startCheck));
+            lockMap.remove(Integer.valueOf(endCheck));
+            notifyAll();
+        }
+        else
+        {
+            System.out.println("Unlock (" + start + " | " + end + ") is impossible");
+        }
+            
+        
     }
     
-    public synchronized void checkBorders(int start, int end)
+    /**
+     * Checks if given borders are valid.
+     * @param start     - start of interval
+     * @param end       - end of interval
+     */
+    public void checkBorders(int start, int end)
     {
         if ((end < start) || (end < 0) || (start < 0) || (end > fileSize))
         {
@@ -61,19 +126,29 @@ public class File
         this.lockMap = list;
     }
     
-    public static void main (String[] args)
+    public String print()
     {
-        File test = new File(100);
-        ArrayList<Integer> list = new ArrayList<Integer>();
-        list.add(50);
-        list.add(70);
-        test.setArray(list);
-        test.lock(10, 20);
-        test.lock(20, 55);
-        test.lock(55, 65);
-        test.lock(50, 70);
-        test.lock(65, 75);
-        test.lock(75, 80);
-     }
+        // Needs to be immutable
+        //return (ArrayList<Integer>) Collections.unmodifiableList(lockMap);
+        int parseCounter = 0;
+        String output = "";
+        for (int i : lockMap)
+        {
+            if (parseCounter % 2 == 1)
+            {
+                output += i + " ] ";
+            }
+            else 
+            {
+                output += "[ " + i + " | ";
+            }
+            parseCounter++;
+            
+        }
+        
+        System.out.println(output);
+        
+        return output;
+    }
 
 }
