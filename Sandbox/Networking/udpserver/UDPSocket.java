@@ -1,4 +1,4 @@
-package servercounter;
+package udpserver;
 import java.io.*;
 import java.net.*;
 

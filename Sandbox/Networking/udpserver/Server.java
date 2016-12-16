@@ -1,4 +1,4 @@
-package servercounter;
+package udpserver;
 
 public class Server 
 {
