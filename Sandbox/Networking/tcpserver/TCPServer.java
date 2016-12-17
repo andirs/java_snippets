@@ -47,10 +47,12 @@ public class TCPServer
                             {
                                 shutDown();
                                 tcpSocket.sendLine("Server shutting down due to user command.");
+                                tcpSocket.sendLine("Final count: " + counter);
                                 System.out.println("Server has been shut down.");
+                                break;
                             }
                             String result = String.valueOf(counter);
-                            tcpSocket.sendLine("Counter has been set to: " + result);
+                            tcpSocket.sendLine("Counter #: " + result);
                         }
                         else
                         {
