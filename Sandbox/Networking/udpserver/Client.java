@@ -51,7 +51,7 @@ public class Client
                 }
             }
             
-            long duration = startTime - System.currentTimeMillis();
+            long duration = System.currentTimeMillis() - startTime;
             
             System.out.println("Duration (all): " + duration + " (msecs)");
             
