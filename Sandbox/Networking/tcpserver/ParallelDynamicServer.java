@@ -15,7 +15,7 @@ public class ParallelDynamicServer
                 try
                 {
                     TCPSocket connection = new TCPSocket(serverSocket.accept());
-                    new TCPSlave(connection);
+                    new TCPThread(connection);
                 }
                 catch (Exception e)
                 {
